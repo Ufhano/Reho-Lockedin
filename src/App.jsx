@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import AddTaskForm from './components/AddTaskForm'
-import Header from './components/Header'
-import ProgressCard from './components/ProgressCard'
+import HeroDashboard from './components/HeroDashboard'
 import RewardsStore from './components/RewardsStore'
 import TaskList from './components/TaskList'
 import TimerCard from './components/TimerCard'
@@ -223,18 +222,28 @@ function App() {
   }
 
   return (
-    <main className="min-h-screen bg-transparent px-3 py-4 text-slate-100 sm:px-4 md:px-6 md:py-6">
-      <div className="mx-auto max-w-7xl space-y-4 md:space-y-6">
-        <Header level={level} totalXp={state.totalXp} streak={state.streak} coins={state.coins} />
+    <main className="min-h-screen bg-transparent px-3 py-4 text-slate-900 sm:px-4 md:px-6 md:py-8">
+      <div className="mx-auto max-w-7xl space-y-4 sm:space-y-5 md:space-y-6">
+        <HeroDashboard
+          completed={completedTasks}
+          total={totalTasks}
+          percent={percent}
+          level={level}
+          totalXp={state.totalXp}
+          onSeeReport={() =>
+            showMessage(
+              `Report: ${completedTasks}/${totalTasks} tasks cleared, ${state.totalXp} XP, ${state.coins} Focus Coins.`,
+            )
+          }
+        />
 
         {flashMessage && (
-          <div className="rounded-xl border border-emerald-300/40 bg-emerald-500/20 px-4 py-3 text-sm font-medium text-emerald-100">
+          <div className="sticky top-3 z-20 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm shadow-slate-200/70 backdrop-blur">
             {flashMessage}
           </div>
         )}
 
-        <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-          <ProgressCard completed={completedTasks} total={totalTasks} percent={percent} />
+        <section className="grid grid-cols-1 gap-4 xl:grid-cols-2">
           <TimerCard
             activeTask={activeTask}
             secondsLeft={secondsLeft}
@@ -248,17 +257,17 @@ function App() {
           <RewardsStore rewards={rewardItems} coins={state.coins} onRedeem={redeemReward} />
         </section>
 
-        <section className="rounded-2xl border border-cyan-400/20 bg-slate-900/40 p-4 shadow-xl shadow-slate-950/40 backdrop-blur md:p-5">
-          <h2 className="text-lg font-semibold text-white">Streak System</h2>
-          <p className="mt-1 text-sm text-cyan-100/80">Current streak: {state.streak}</p>
-          <p className="text-sm text-emerald-200">Daily goal: Clear {DAILY_GOAL} missions today</p>
-          <p className="mt-2 text-xs text-cyan-100/60">
+        <section className="premium-card">
+          <h2 className="text-lg font-bold text-slate-900">Streak Card</h2>
+          <p className="mt-1 text-sm text-slate-600">Current streak: {state.streak}</p>
+          <p className="text-sm font-medium text-slate-700">Daily goal: Clear {DAILY_GOAL} missions today</p>
+          <p className="mt-2 text-xs text-slate-500">
             Today: {state.dailyCompletionsDate === getDateKey() ? state.dailyCompletionsCount : 0}/
             {DAILY_GOAL} completed
           </p>
           <button
             type="button"
-            className="mt-3 rounded-lg bg-slate-700 px-3 py-2 text-sm font-semibold text-white"
+            className="premium-btn mt-3 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
             onClick={resetDay}
           >
             Reset Day
@@ -267,19 +276,19 @@ function App() {
 
         <AddTaskForm onAddTask={addTask} />
 
-        <section className="rounded-2xl border border-cyan-400/20 bg-slate-900/40 p-4 shadow-xl shadow-slate-950/40 backdrop-blur md:p-5">
-          <h2 className="text-lg font-semibold text-white">Filter Missions</h2>
+        <section className="premium-card">
+          <h2 className="text-lg font-bold text-slate-900">Filter Missions</h2>
           <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
             <input
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
-              className="rounded-lg border border-cyan-300/30 bg-slate-950/80 px-3 py-2 text-sm text-white"
+              className="premium-input"
               placeholder="Search by task title"
             />
             <select
               value={priorityFilter}
               onChange={(event) => setPriorityFilter(event.target.value)}
-              className="rounded-lg border border-cyan-300/30 bg-slate-950/80 px-3 py-2 text-sm text-white"
+              className="premium-input"
             >
               <option value="All">All Priorities</option>
               <option value="High">High</option>
@@ -289,7 +298,7 @@ function App() {
             <select
               value={statusFilter}
               onChange={(event) => setStatusFilter(event.target.value)}
-              className="rounded-lg border border-cyan-300/30 bg-slate-950/80 px-3 py-2 text-sm text-white"
+              className="premium-input"
             >
               <option value="All">All Status</option>
               <option value="Pending">Pending</option>

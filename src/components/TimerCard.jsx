@@ -13,17 +13,19 @@ function TimerCard({
   const timeLabel = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 
   return (
-    <section className="rounded-2xl border border-cyan-400/20 bg-slate-900/40 p-4 shadow-xl shadow-slate-950/40 backdrop-blur md:p-5">
-      <h2 className="text-lg font-semibold text-white">Focus Countdown</h2>
-      <p className="mt-2 text-sm text-cyan-100/80">
+    <section className="premium-card">
+      <h2 className="text-lg font-bold text-slate-900">Focus Countdown</h2>
+      <p className="mt-2 text-sm text-slate-500">
         {activeTask ? `Active: ${activeTask.title}` : 'Pick a task and start timer'}
       </p>
-      <p className="mt-4 text-4xl font-bold tracking-wide text-emerald-300">{timeLabel}</p>
-      {timerDone && <p className="mt-2 text-sm text-emerald-200">Mission time complete.</p>}
-      <div className="mt-4 flex flex-wrap gap-2">
+      <p className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-4 text-center text-4xl font-black tracking-[0.08em] text-slate-800 md:text-5xl">
+        {timeLabel}
+      </p>
+      {timerDone && <p className="mt-2 text-sm font-medium text-slate-700">Mission time complete.</p>}
+      <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
         <button
           type="button"
-          className="rounded-lg bg-cyan-500 px-3 py-2 text-sm font-semibold text-slate-950 disabled:cursor-not-allowed disabled:opacity-50"
+          className="premium-btn bg-zinc-900 text-white shadow-sm hover:bg-zinc-800"
           onClick={onStart}
           disabled={!activeTask || isRunning || secondsLeft === 0}
         >
@@ -31,7 +33,7 @@ function TimerCard({
         </button>
         <button
           type="button"
-          className="rounded-lg bg-amber-400 px-3 py-2 text-sm font-semibold text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+          className="premium-btn border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
           onClick={onPause}
           disabled={!isRunning}
         >
@@ -39,7 +41,7 @@ function TimerCard({
         </button>
         <button
           type="button"
-          className="rounded-lg bg-emerald-400 px-3 py-2 text-sm font-semibold text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+          className="premium-btn border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
           onClick={onResume}
           disabled={!activeTask || isRunning || secondsLeft === 0}
         >
@@ -47,7 +49,7 @@ function TimerCard({
         </button>
         <button
           type="button"
-          className="rounded-lg bg-slate-700 px-3 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+          className="premium-btn bg-slate-100 text-slate-600 hover:bg-slate-200"
           onClick={onReset}
           disabled={!activeTask}
         >

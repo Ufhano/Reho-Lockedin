@@ -1,10 +1,6 @@
 import { useState } from 'react'
 
-const priorityStyles = {
-  High: 'bg-red-500/20 text-red-200 border-red-300/40',
-  Medium: 'bg-amber-500/20 text-amber-100 border-amber-300/40',
-  Low: 'bg-emerald-500/20 text-emerald-100 border-emerald-300/40',
-}
+const priorityStyles = 'bg-slate-50 border border-slate-200 text-slate-600'
 
 function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
   const [isEditing, setIsEditing] = useState(false)
@@ -42,19 +38,19 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
   }
 
   return (
-    <article className="rounded-xl border border-cyan-400/20 bg-slate-950/60 p-4">
+    <article className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-200/70">
       <div className="flex items-start justify-between gap-2">
         {isEditing ? (
           <input
             value={draft.title}
             onChange={(event) => setDraft((prev) => ({ ...prev, title: event.target.value }))}
-            className="w-full rounded-lg border border-cyan-300/30 bg-slate-900 px-2 py-1 text-sm text-white"
+            className="premium-input w-full"
           />
         ) : (
-          <h3 className="text-base font-semibold text-white">{task.title}</h3>
+          <h3 className="text-base font-bold text-slate-900 md:text-lg">{task.title}</h3>
         )}
         {task.completed && (
-          <span className="rounded-full bg-emerald-500/20 px-2 py-1 text-xs font-medium text-emerald-200">
+          <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-xs font-medium text-slate-600">
             Cleared
           </span>
         )}
@@ -64,7 +60,7 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
           <select
             value={draft.category}
             onChange={(event) => setDraft((prev) => ({ ...prev, category: event.target.value }))}
-            className="rounded-lg border border-cyan-300/30 bg-slate-900 px-2 py-2 text-white"
+            className="premium-input"
           >
             <option value="must">Must-Do Mission</option>
             <option value="side">Side Quest</option>
@@ -72,7 +68,7 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
           <select
             value={draft.priority}
             onChange={(event) => setDraft((prev) => ({ ...prev, priority: event.target.value }))}
-            className="rounded-lg border border-cyan-300/30 bg-slate-900 px-2 py-2 text-white"
+            className="premium-input"
           >
             <option value="High">High</option>
             <option value="Medium">Medium</option>
@@ -85,7 +81,7 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
             onChange={(event) =>
               setDraft((prev) => ({ ...prev, estimatedMinutes: event.target.value }))
             }
-            className="rounded-lg border border-cyan-300/30 bg-slate-900 px-2 py-2 text-white"
+            className="premium-input"
             placeholder="Minutes"
           />
           <input
@@ -93,7 +89,7 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
             min="1"
             value={draft.xpReward}
             onChange={(event) => setDraft((prev) => ({ ...prev, xpReward: event.target.value }))}
-            className="rounded-lg border border-cyan-300/30 bg-slate-900 px-2 py-2 text-white"
+            className="premium-input"
             placeholder="XP"
           />
           <input
@@ -101,33 +97,34 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
             min="1"
             value={draft.coinReward}
             onChange={(event) => setDraft((prev) => ({ ...prev, coinReward: event.target.value }))}
-            className="rounded-lg border border-cyan-300/30 bg-slate-900 px-2 py-2 text-white"
+            className="premium-input"
             placeholder="Coins"
           />
         </div>
       ) : (
-        <div className="mt-3 flex flex-wrap gap-2 text-xs">
-          <span className={`rounded-full border px-2 py-1 ${priorityStyles[task.priority]}`}>
+        <div className="mt-3 flex flex-wrap gap-2 text-xs font-medium">
+          <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-1 ${priorityStyles}`}>
+            <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
             {task.priority}
           </span>
-          <span className="rounded-full bg-slate-800 px-2 py-1 text-cyan-100">{task.estimatedMinutes} min</span>
-          <span className="rounded-full bg-cyan-500/20 px-2 py-1 text-cyan-100">+{task.xpReward} XP</span>
-          <span className="rounded-full bg-emerald-500/20 px-2 py-1 text-emerald-100">+{task.coinReward} coins</span>
+          <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-slate-600">{task.estimatedMinutes} min</span>
+          <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-slate-600">+{task.xpReward} XP</span>
+          <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-slate-600">+{task.coinReward} coins</span>
         </div>
       )}
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-4">
         {isEditing ? (
           <>
             <button
               type="button"
-              className="rounded-lg bg-emerald-400 px-3 py-2 text-sm font-semibold text-slate-950"
+              className="premium-btn border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
               onClick={saveEdit}
             >
               Save
             </button>
             <button
               type="button"
-              className="rounded-lg bg-slate-700 px-3 py-2 text-sm font-semibold text-white"
+              className="premium-btn bg-slate-100 text-slate-600 hover:bg-slate-200"
               onClick={cancelEdit}
             >
               Cancel
@@ -137,7 +134,7 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
           <>
             <button
               type="button"
-              className="rounded-lg bg-emerald-400 px-3 py-2 text-sm font-semibold text-slate-950 disabled:cursor-not-allowed disabled:opacity-50"
+              className="premium-btn border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
               onClick={() => onComplete(task.id)}
               disabled={task.completed}
             >
@@ -145,7 +142,7 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
             </button>
             <button
               type="button"
-              className="rounded-lg bg-cyan-500 px-3 py-2 text-sm font-semibold text-slate-950"
+              className="premium-btn bg-zinc-900 text-white shadow-sm hover:bg-zinc-800"
               onClick={() => onStartTimer(task.id)}
             >
               Start Timer
@@ -155,7 +152,7 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
         {!isEditing && (
           <button
             type="button"
-            className="rounded-lg bg-indigo-500 px-3 py-2 text-sm font-semibold text-white"
+            className="premium-btn bg-slate-100 text-slate-600 hover:bg-slate-200"
             onClick={() => setIsEditing(true)}
           >
             Edit
@@ -163,10 +160,11 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
         )}
         <button
           type="button"
-          className="rounded-lg bg-rose-500 px-3 py-2 text-sm font-semibold text-white"
+          className="premium-btn grid h-10 w-10 place-items-center justify-self-end rounded-full border border-slate-200 bg-white p-0 text-lg text-slate-400 hover:bg-slate-50 hover:text-slate-700"
           onClick={() => onDelete(task.id)}
+          aria-label="Delete task"
         >
-          Delete
+          🗑
         </button>
       </div>
     </article>

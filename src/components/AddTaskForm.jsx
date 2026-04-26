@@ -28,9 +28,9 @@ function AddTaskForm({ onAddTask }) {
   }
 
   return (
-    <section className="rounded-2xl border border-cyan-400/20 bg-slate-900/40 p-4 shadow-xl shadow-slate-950/40 backdrop-blur md:p-5">
-      <h2 className="text-lg font-semibold text-white">Add Task</h2>
-      <form className="mt-4 space-y-3" onSubmit={onSubmit}>
+    <section className="premium-card">
+      <h2 className="text-lg font-bold text-slate-900">Add Task</h2>
+      <form className="mt-4 space-y-4" onSubmit={onSubmit}>
         <Input
           label="Task title"
           value={form.title}
@@ -54,7 +54,7 @@ function AddTaskForm({ onAddTask }) {
             options={['High', 'Medium', 'Low'].map((item) => ({ value: item, label: item }))}
           />
         </div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <Input
             type="number"
             min="1"
@@ -79,7 +79,7 @@ function AddTaskForm({ onAddTask }) {
         </div>
         <button
           type="submit"
-          className="w-full rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-slate-950"
+          className="premium-btn w-full bg-zinc-900 py-3 text-base text-white shadow-sm hover:bg-zinc-800"
         >
           Add Mission
         </button>
@@ -90,10 +90,10 @@ function AddTaskForm({ onAddTask }) {
 
 function Input({ label, onChange, ...props }) {
   return (
-    <label className="flex flex-col gap-1 text-sm text-cyan-100/80">
+    <label className="flex flex-col gap-1.5 text-sm text-slate-600">
       {label}
       <input
-        className="rounded-lg border border-cyan-200/20 bg-slate-950/70 px-3 py-2 text-white outline-none focus:border-cyan-400"
+        className="premium-input"
         onChange={(event) => onChange(event.target.value)}
         {...props}
       />
@@ -103,10 +103,10 @@ function Input({ label, onChange, ...props }) {
 
 function Select({ label, value, onChange, options }) {
   return (
-    <label className="flex flex-col gap-1 text-sm text-cyan-100/80">
+    <label className="flex flex-col gap-1.5 text-sm text-slate-600">
       {label}
       <select
-        className="rounded-lg border border-cyan-200/20 bg-slate-950/70 px-3 py-2 text-white outline-none focus:border-cyan-400"
+        className="premium-input"
         value={value}
         onChange={(event) => onChange(event.target.value)}
       >
