@@ -5,6 +5,7 @@ import RewardsStore from './components/RewardsStore'
 import TaskList from './components/TaskList'
 import TimerCard from './components/TimerCard'
 import {
+  calculateTaskRewards,
   DAILY_GOAL,
   STORAGE_KEY,
   getDateKey,
@@ -28,7 +29,13 @@ function App() {
   const [state, setState] = useState(() => {
     // localStorage loading: if saved state exists, restore it; else use starter data.
     const saved = localStorage.getItem(STORAGE_KEY)
-    return saved ? JSON.parse(saved) : createInitialState()
+    const baseState = saved ? JSON.parse(saved) : createInitialState()
+    // Compatibility: old tasks may store estimatedTime or manual rewards.
+    const normalizedTasks = (baseState.tasks ?? []).map((task) => ({
+      ...task,
+      estimatedMinutes: Number(task.estimatedMinutes ?? task.estimatedTime ?? 25),
+    }))
+    return { ...baseState, tasks: normalizedTasks }
   })
   const [activeTaskId, setActiveTaskId] = useState(null)
   const [secondsLeft, setSecondsLeft] = useState(0)
@@ -142,6 +149,7 @@ function App() {
       const updatedTasks = prev.tasks.map((entry) =>
         entry.id === taskId ? { ...entry, completed: true } : entry,
       )
+      const rewards = calculateTaskRewards(task)
 
       const sameDayCompletions =
         prev.dailyCompletionsDate === today ? prev.dailyCompletionsCount : 0
@@ -160,13 +168,13 @@ function App() {
         streakLastAwardedDate = today
       }
 
-      showMessage(`Task cleared. +${task.xpReward} XP earned.`)
+      showMessage(`Task cleared. +${rewards.xp} XP earned.`)
 
       return {
         ...prev,
         tasks: updatedTasks,
-        totalXp: prev.totalXp + task.xpReward,
-        coins: prev.coins + task.coinReward,
+        totalXp: prev.totalXp + rewards.xp,
+        coins: prev.coins + rewards.coins,
         streak: nextStreak,
         dailyCompletionsDate: today,
         dailyCompletionsCount: newDailyCompletions,

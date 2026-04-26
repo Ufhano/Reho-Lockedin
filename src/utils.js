@@ -8,8 +8,6 @@ export const starterTasks = [
     category: 'must',
     priority: 'High',
     estimatedMinutes: 45,
-    xpReward: 50,
-    coinReward: 30,
     completed: false,
   },
   {
@@ -18,8 +16,6 @@ export const starterTasks = [
     category: 'must',
     priority: 'High',
     estimatedMinutes: 30,
-    xpReward: 35,
-    coinReward: 20,
     completed: false,
   },
   {
@@ -28,8 +24,6 @@ export const starterTasks = [
     category: 'side',
     priority: 'Medium',
     estimatedMinutes: 15,
-    xpReward: 10,
-    coinReward: 10,
     completed: false,
   },
   {
@@ -38,17 +32,14 @@ export const starterTasks = [
     category: 'side',
     priority: 'Low',
     estimatedMinutes: 20,
-    xpReward: 15,
-    coinReward: 10,
     completed: false,
   },
 ]
 
 export const rewardItems = [
   { id: 'break', label: '15 minute break', cost: 50 },
-  { id: 'episode', label: 'Watch one episode', cost: 100 },
-  { id: 'gaming', label: 'Gaming time', cost: 150 },
-  { id: 'chill', label: 'Chill session', cost: 200 },
+  { id: 'chill', label: 'chill break', cost: 100 },
+  { id: 'entertainment', label: 'entertainment time', cost: 150 },
 ]
 
 export const getLevelFromXp = (xp) => Math.floor(xp / 100) + 1
@@ -64,4 +55,13 @@ export const getYesterdayKey = () => {
   const value = new Date()
   value.setDate(value.getDate() - 1)
   return getDateKey(value)
+}
+
+export const calculateTaskRewards = (task) => {
+  const estimatedTime = Number(task.estimatedTime ?? task.estimatedMinutes ?? 0)
+  const multiplier =
+    task.priority === 'High' ? 1.5 : task.priority === 'Medium' ? 1.2 : 1
+  const xp = Math.round(estimatedTime * multiplier)
+  const coins = Math.round(xp / 2)
+  return { xp, coins }
 }

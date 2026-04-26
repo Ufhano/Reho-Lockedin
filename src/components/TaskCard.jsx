@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { calculateTaskRewards } from '../utils'
 
 const priorityStyles = 'bg-slate-50 border border-slate-200 text-slate-600'
 
@@ -9,9 +10,9 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
     category: task.category,
     priority: task.priority,
     estimatedMinutes: task.estimatedMinutes,
-    xpReward: task.xpReward,
-    coinReward: task.coinReward,
   })
+
+  const rewards = calculateTaskRewards(task)
 
   const saveEdit = () => {
     if (!draft.title.trim()) return
@@ -19,8 +20,6 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
       ...draft,
       title: draft.title.trim(),
       estimatedMinutes: Number(draft.estimatedMinutes),
-      xpReward: Number(draft.xpReward),
-      coinReward: Number(draft.coinReward),
     })
     setIsEditing(false)
   }
@@ -31,8 +30,6 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
       category: task.category,
       priority: task.priority,
       estimatedMinutes: task.estimatedMinutes,
-      xpReward: task.xpReward,
-      coinReward: task.coinReward,
     })
     setIsEditing(false)
   }
@@ -84,22 +81,9 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
             className="premium-input"
             placeholder="Minutes"
           />
-          <input
-            type="number"
-            min="1"
-            value={draft.xpReward}
-            onChange={(event) => setDraft((prev) => ({ ...prev, xpReward: event.target.value }))}
-            className="premium-input"
-            placeholder="XP"
-          />
-          <input
-            type="number"
-            min="1"
-            value={draft.coinReward}
-            onChange={(event) => setDraft((prev) => ({ ...prev, coinReward: event.target.value }))}
-            className="premium-input"
-            placeholder="Coins"
-          />
+          <p className="premium-input col-span-2 bg-slate-50 text-slate-500">
+            Rewards are auto-calculated.
+          </p>
         </div>
       ) : (
         <div className="mt-3 flex flex-wrap gap-2 text-xs font-medium">
@@ -108,8 +92,12 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
             {task.priority}
           </span>
           <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-slate-600">{task.estimatedMinutes} min</span>
-          <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-slate-600">+{task.xpReward} XP</span>
-          <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-slate-600">+{task.coinReward} coins</span>
+          <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-slate-600">
+            +{rewards.xp} XP (auto)
+          </span>
+          <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-slate-600">
+            +{rewards.coins} coins (auto)
+          </span>
         </div>
       )}
       <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-4">
@@ -138,7 +126,7 @@ function TaskCard({ task, onComplete, onDelete, onStartTimer, onUpdate }) {
               onClick={() => onComplete(task.id)}
               disabled={task.completed}
             >
-              Task Cleared
+              {task.completed ? 'Cleared' : 'Task Cleared'}
             </button>
             <button
               type="button"

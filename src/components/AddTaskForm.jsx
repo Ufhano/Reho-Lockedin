@@ -5,8 +5,6 @@ const defaultForm = {
   category: 'must',
   priority: 'Medium',
   estimatedMinutes: 25,
-  xpReward: 20,
-  coinReward: 10,
 }
 
 function AddTaskForm({ onAddTask }) {
@@ -20,8 +18,6 @@ function AddTaskForm({ onAddTask }) {
       ...form,
       title: form.title.trim(),
       estimatedMinutes: Number(form.estimatedMinutes),
-      xpReward: Number(form.xpReward),
-      coinReward: Number(form.coinReward),
     })
 
     setForm(defaultForm)
@@ -54,7 +50,7 @@ function AddTaskForm({ onAddTask }) {
             options={['High', 'Medium', 'Low'].map((item) => ({ value: item, label: item }))}
           />
         </div>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Input
             type="number"
             min="1"
@@ -62,20 +58,9 @@ function AddTaskForm({ onAddTask }) {
             value={form.estimatedMinutes}
             onChange={(value) => setForm((prev) => ({ ...prev, estimatedMinutes: value }))}
           />
-          <Input
-            type="number"
-            min="1"
-            label="XP"
-            value={form.xpReward}
-            onChange={(value) => setForm((prev) => ({ ...prev, xpReward: value }))}
-          />
-          <Input
-            type="number"
-            min="1"
-            label="Coins"
-            value={form.coinReward}
-            onChange={(value) => setForm((prev) => ({ ...prev, coinReward: value }))}
-          />
+          <p className="rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-500">
+            XP and Focus Coins are auto-calculated from minutes and priority.
+          </p>
         </div>
         <button
           type="submit"
